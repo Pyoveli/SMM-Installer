@@ -124,7 +124,7 @@ sleep 1s
 
 echo The End...
 
-# Clear screes and Caddy
+# Clear screens and Caddy
 killall screen
 killall caddy
 wineserver -k

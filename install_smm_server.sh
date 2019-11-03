@@ -62,7 +62,7 @@ winetricks -q vcrun2015
 winetricks win10
 
 #Extract zips to right directories
-echo "${NEWLINE}Extracting zips"
+echo "${NEWLINE}Extracting zips.."
 mkdir -p $instdir
 
 if [ -f "$smmserverfinal_v5" ]; then
@@ -124,12 +124,13 @@ sleep 1s
 
 echo The End...
 
-# Clear screems and Caddy
+# Clear screes and Caddy
 killall screen
 killall caddy
+wineserver -k
 EOF1
 chmod +x LaunchSMMServer.sh
 
 echo "${NEWLINE}Successfully installed to $(realpath $winedir)"
-echo "You may now run CEMU whit SMM Server using LaunchSMMServer.sh written in this directory"
+echo "You may now run CEMU whit SMM Server using LaunchSMMServer.sh created in this directory"
 echo "You may place LaunchSMMServer.sh anywhere"

@@ -4,7 +4,6 @@ if (( $EUID == 0 )); then
 	echo "Do not run as root."
 	exit 1
 fi
-
 if [ -z "$DISPLAY" ]; then
 	export DISPLAY=:0.0
 fi

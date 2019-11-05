@@ -89,7 +89,7 @@ echo "Starting SMM Server..."
 cd $(realpath $instdir/NintendoClients)
 screen -dmS SMMServer python3 example_smm_server.py > $instdir/NEX_SMM.log
 
-# Wait 2 second to make sure server has time to start
+# Wait 2 sec to make sure server has time to start
 sleep 2
 
 # Make screen for Friend Server and direct output to NEX_Friend.log file

@@ -40,7 +40,7 @@ if ! $(glxinfo | grep -q -e 'Mesa 18.2' -e 'Mesa 18.3' -e 'Mesa 18.4' -e 'Mesa 1
 fi
 
 # Check if installation directory is set. otherwise will use default directory under .wine/Cemu 
-if [ -z $1 ]; then instdir=$HOME/.wine/Cemu; else instdir=$HOME"$c1"; fi
+if [ -z $1 ]; then instdir=$HOME/.wine/Cemu; else instdir=$HOME"$1"; fi
 
 
 #*************

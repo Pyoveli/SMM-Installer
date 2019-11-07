@@ -53,18 +53,21 @@ cemurl=$(curl -s http://cemu.info |grep .zip |awk -F '"' {'print $2'})
 # gpurl=$(curl -s https://github.com/slashiee/cemu_graphic_packs/releases |grep graphicPacks |awk -F '"' NR==1{'print $2'})
 churl=$(curl -s https://cemuhook.sshnuke.net |grep .zip |awk -F '"' NR==2{'print $2'})
 fonturl=https://github.com/dnmodder/cemu_lutris_files/raw/master/sharedFonts.tar.gz
+megaurl=https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU
 
 # Get name of file which was downloaded
 cemufile=$(basename "$cemurl")
 #gpfile=$(basename "$gpurl")
 chfile=$(basename "$churl")
 fontfile=$(basename "$fonturl")
+megafile=$(basename "$megaurl")
 
 # Check if files are present, if not then download it
 if [ ! -f "$cemufile" ]; then
 	echo "Download latest '$cemufile'"
 	wget -q --show-progress "$cemurl"
 fi
+
 
 #if [ ! -f "$gpfile" ]; then
 #	echo "Download latest $gpfile"
@@ -80,7 +83,12 @@ if [ ! -f "$fontfile" ]; then
 	echo "Download latest '$fontfile'"
 	wget -q --show-progress "$fonturl"
 fi
-
+mfile=SmmServerFinal_v5.zip
+if [ ! -f "$mfile" ]; then
+	echo "Download latest '$mfile'"	
+megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU' >& $test 
+fi
+#megadl --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU'
 
 # Create and configure wine prefix
 echo "Configuring new wine prefix '$instdir'"
@@ -92,13 +100,17 @@ echo "Configuring new wine prefix '$instdir'"
 
 
 # These are only for testing, will be deleted before release
-echo "$cemufile"
+#echo "$cemufile"
 #echo "$gpfile"
-echo "$churl"
-echo "$chfile"
-echo "$fonturl"
-echo "$fontfile"
-echo "$llvm_version"
+#echo "$churl"
+#echo "$chfile"
+#echo "$fonturl"
+#echo "$fontfile"
+#echo "$llvm_version"
+#echo "$megafile"
+#echo "$mfile"
+#echo "$megaurl"
+echo "$test"
 
 read -p "Press 'enter' to exit"
 

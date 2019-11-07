@@ -86,7 +86,8 @@ fi
 mfile=SmmServerFinal_v5.zip
 if [ ! -f "$mfile" ]; then
 	echo "Download latest '$mfile'"	
-megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU' >& $test 
+megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU'
+
 fi
 #megadl --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU'
 
@@ -110,29 +111,31 @@ echo "Configuring new wine prefix '$instdir'"
 #echo "$megafile"
 #echo "$mfile"
 #echo "$megaurl"
+clear
 echo "$test"
 
 read -p "Press 'enter' to exit"
 
 
 # Post install cleaning, will delete downloaded files
-rm -rf "$cemufile"
-rm -rf "$gpfile" 
-rm -rf "$chfile"
-rm -rf "$fontfile"
+#rm -rf "$cemufile"
+#rm -rf "$gpfile" 
+#rm -rf "$chfile"
+#rm -rf "$fontfile"
 
 #**************************
 #* Create launcher script *
 #************************** 
 
-cat > StartCemu.sh << EOF1
-
+#Create launch scripts
+cat > start_cemu.sh << EOF1
 #!/bin/bash
-export WINEPREFIX="$(realpath $instdir)"
+export WINEPREFIX="$(realpath $instdir)/wine"
 #for cemuhook
 export WINEDLLOVERRIDES="mscoree=;mshtml=;dbghelp.dll=n,b"
 
 cd $(realpath $instdir)
 mesa_glthread=true __GL_THREADED_OPTIMIZATIONS=1 vblank_mode=0 WINEESYNC=1 wine Cemu.exe "\$@"
 EOF1
-chmod +x StartCemu.sh
+chmod +x start_cemu.sh
+

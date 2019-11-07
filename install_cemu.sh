@@ -39,7 +39,9 @@ if ! $(glxinfo | grep -q -e 'Mesa 18.2' -e 'Mesa 18.3' -e 'Mesa 18.4' -e 'Mesa 1
 		exit 1
 fi
 
-instdir=$HOME/"${1:1}"
+# Check if installation directory is set. otherwise will use default directory under .wine/Cemu 
+if [ -z $1 ]; then instdir=$HOME/.wine/Cemu; else instdir=$HOME"$c1"; fi
+
 
 #*************
 #* Installer *
@@ -60,8 +62,8 @@ fontfile=$(basename "$fonturl")
 
 # Check if files are present, if not then download it
 if [ ! -f "$cemufile" ]; then
-	echo "Download latest $cemufile"
-	wget -q --show-progress $cemurl
+	echo "Download latest '$cemufile'"
+	wget -q --show-progress "$cemurl"
 fi
 
 #if [ ! -f "$gpfile" ]; then
@@ -70,21 +72,22 @@ fi
 #fi
 
 if [ ! -f "$chfile" ]; then
-	echo "Download latest $chfile"
-	wget -q --show-progress $churl
+	echo "Download latest '$chfile'"
+	wget -q --show-progress "$churl"
 fi
 
 if [ ! -f "$fontfile" ]; then
-	echo "Download latest $fontfile"
-	wget -q --show-progress $fonturl
+	echo "Download latest '$fontfile'"
+	wget -q --show-progress "$fonturl"
 fi
 
 
 # Create and configure wine prefix
-echo "Configuring new wine prefix $instdir"
+echo "Configuring new wine prefix '$instdir'"
 #export WINEPREFIX=$(realpath $instdir) 
+#wineboot $instdir
 #winetricks -q vcrun2015
-#winetricks settings win7
+#winetricks win7
 
 
 
@@ -96,15 +99,15 @@ echo "$chfile"
 echo "$fonturl"
 echo "$fontfile"
 echo "$llvm_version"
-echo "$test"
+
 read -p "Press 'enter' to exit"
 
 
 # Post install cleaning, will delete downloaded files
-rm -rf $cemufile
-rm -rf $gpfile 
-rm -rf $chfile
-rm -rf $fontfile
+rm -rf "$cemufile"
+rm -rf "$gpfile" 
+rm -rf "$chfile"
+rm -rf "$fontfile"
 
 #**************************
 #* Create launcher script *

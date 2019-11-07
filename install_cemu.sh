@@ -15,7 +15,7 @@ if [ -z "$DISPLAY" ]; then
 fi
 
 # Check required depencies if missing then tell whics is missing and how to install them
-declare -a reqsw=("wine" "bsdtar" "unzip" "glxinfo" "curl" "wget" "winetricks" "llvm-config" "screen")
+declare -a reqsw=("wine" "bsdtar" "unzip" "glxinfo" "curl" "wget" "winetricks" "screen")
 for i in "${reqsw[@]}"
 do
 	if ! [ -x "$(command -v $i)" ]; then
@@ -38,6 +38,8 @@ if ! $(glxinfo | grep -q -e 'Mesa 18.2' -e 'Mesa 18.3' -e 'Mesa 18.4' -e 'Mesa 1
 		echo "You must install at least Mesa 18.2.0"
 		exit 1
 fi
+
+instdir=$HOME/"${1:1}"
 
 #*************
 #* Installer *
@@ -77,6 +79,15 @@ if [ ! -f "$fontfile" ]; then
 	wget -q --show-progress $fonturl
 fi
 
+
+# Create and configure wine prefix
+echo "Configuring new wine prefix $instdir"
+#export WINEPREFIX=$(realpath $instdir) 
+#winetricks -q vcrun2015
+#winetricks settings win7
+
+
+
 # These are only for testing, will be deleted before release
 echo "$cemufile"
 #echo "$gpfile"
@@ -98,3 +109,15 @@ rm -rf $fontfile
 #**************************
 #* Create launcher script *
 #************************** 
+
+cat > StartCemu.sh << EOF1
+
+#!/bin/bash
+export WINEPREFIX="$(realpath $instdir)"
+#for cemuhook
+export WINEDLLOVERRIDES="mscoree=;mshtml=;dbghelp.dll=n,b"
+
+cd $(realpath $instdir)
+mesa_glthread=true __GL_THREADED_OPTIMIZATIONS=1 vblank_mode=0 WINEESYNC=1 wine Cemu.exe "\$@"
+EOF1
+chmod +x StartCemu.sh

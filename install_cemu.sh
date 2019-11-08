@@ -95,17 +95,17 @@ winetricks -q vcrun2015
 winetricks win7
 
 if [ -e "$chfile" ]; then
-	echo "Now unpacking '$chfile'"	
+	echo "Now unpacking '$chfile' ..."	
 	unzip -q -o "$chfile" -d $instdir/drive_c/Cemu
 fi
 
 if [ -e "$fontfile"; then
-	echo "Now unpacking '$fontfile'"
+	echo "Now unpacking '$fontfile' ..."
 	tar -q xvzf "$fontfile" -C $instdir/drive_c/Cemu
 fi
 
 if [ -e "$mfile" ]; then
-	echo "Now unpacking '$mfile'"
+	echo "Now unpacking '$mfile' ..."
 	bsdtar -xf "$mfile" -s'|[^/]*/||' -C $instdir/drive_c/
 fi
 

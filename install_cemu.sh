@@ -1,9 +1,9 @@
 #!/bin/bash
-#test
+
 #*************************************************************
 #* Pre-Intall Checks (Required software for install and wine * 
 #*************************************************************
-exec 3>&1 
+
 # If run as root, exit... 
 if (( $EUID == 0 )); then
 	echo "Do not run as root."
@@ -42,7 +42,6 @@ fi
 # Check if installation directory is set. otherwise will use default directory under .wine/Cemu 
 if [ -z $1 ]; then instdir=$HOME/.wine/Cemu; else instdir=$HOME"$1"; fi
 
-
 #*************
 #* Installer *
 #*************
@@ -68,45 +67,54 @@ if [ ! -f "$cemufile" ]; then
 	wget -q --show-progress "$cemurl"
 fi
 
-
 #if [ ! -f "$gpfile" ]; then
 #	echo "Download latest $gpfile"
 #	wget -q --show-progress https://github.com$gpurl
 #fi
 
 if [ ! -f "$chfile" ]; then
-	echo "Download latest '$chfile'"
+	echo "Download latest '$chfile' ..."
 	wget -q --show-progress "$churl"
 fi
 
 if [ ! -f "$fontfile" ]; then
-	echo "Download latest '$fontfile'"
+	echo "Download latest '$fontfile' ..."
 	wget -q --show-progress "$fonturl"
 fi
 mfile=SmmServerFinal_v5.zip
 if [ ! -f "$mfile" ]; then
-	echo "Download latest '$mfile'"	
-megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU') 
-
+	echo "Download latest '$mfile' ..."	
+	megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU' 
 fi
-#megadl --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU'
 
 # Create and configure wine prefix
 echo "Configuring new wine prefix '$instdir'"
-#export WINEPREFIX=$(realpath $instdir) 
-#wineboot $instdir
-#winetricks -q vcrun2015
-#winetricks win7
+export WINEPREFIX=$(realpath $instdir) 
+wineboot $instdir
+winetricks -q vcrun2015
+winetricks win7
 
+if [ -e "$chfile" ]; then
+	echo "Now unpacking '$chfile'"	
+	unzip -q -o "$chfile" -d $instdir/drive_c/Cemu
+fi
 
+if [ -e "$fontfile"; then
+	echo "Now unpacking '$fontfile'"
+	tar -q xvzf "$fontfile" -C $instdir/drive_c/Cemu
+fi
+
+if [ -e "$mfile" ]; then
+	echo "Now unpacking '$mfile'"
+	bsdtar -xf "$mfile" -s'|[^/]*/||' -C $instdir/drive_c/
+fi
+
+#if [ -e "$gfxpackzip" ]; then
+#	rm -rf ${instdir}/graphicPacks/* #remove old versions of Graphic Packs to help with major changes
+#	unzip -q -o "$gfxpackzip" -d ${instdir}/graphicPacks/
+#fi
 
 # These are only for testing, will be deleted before release
-#echo "$cemufile"
-#echo "$gpfile"
-#echo "$churl"
-#echo "$chfile"
-#echo "$fonturl"
-
 #echo "$llvm_version"
 #echo "$megafile"
 #echo "$mfile"
@@ -118,24 +126,24 @@ echo "$test"
 read -p "Press 'enter' to exit"
 
 # Post install cleaning, will delete downloaded files
-rm -rf "$cemufile"
+#rm -rf "$cemufile"
 #rm -rf "$gpfile" 
-rm -rf "$chfile"
-rm -rf "$fontfile"
+#rm -rf "$chfile"
+#rm -rf "$fontfile"
+#rm -rf "$mfile"
 
 #**************************
 #* Create launcher script *
 #************************** 
 
-#Create launch scripts
+# Create launch scripts
 cat > start_cemu.sh << EOF1
 #!/bin/bash
 export WINEPREFIX="$(realpath $instdir)/wine"
-#for cemuhook
+for cemuhook
 export WINEDLLOVERRIDES="mscoree=;mshtml=;dbghelp.dll=n,b"
 
 cd $(realpath $instdir)
 mesa_glthread=true __GL_THREADED_OPTIMIZATIONS=1 vblank_mode=0 WINEESYNC=1 wine Cemu.exe "\$@"
 EOF1
 chmod +x start_cemu.sh
-exec 3>&- 

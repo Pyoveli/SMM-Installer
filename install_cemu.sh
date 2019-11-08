@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Arguments
+# -k 				Keep install files
+# -local			Only use local files to install
+# -smm 				Install Cemu whit SMM servers
+# -cemu 			Install Cemu only whit cemuhook
+# -d <custom install dir>	Make install into custom location. Default is /home/<user>/.wine/Cemu
+
 #*************************************************************
 #* Pre-Intall Checks (Required software for install and wine * 
 #*************************************************************

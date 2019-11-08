@@ -46,8 +46,27 @@ if ! $(glxinfo | grep -q -e 'Mesa 18.2' -e 'Mesa 18.3' -e 'Mesa 18.4' -e 'Mesa 1
 		exit 1
 fi
 
+# Get arguments and set flags for them
+for arg in "$@"
+do
+	if [ "$arg" == "--help" ] || [ "$arg" == "-h" ]
+		then
+			echo "Help argument detected."
+	fi
+
+	if [ "$arg" == "--local" ] || [ "$arg" == "-l" ]
+		then
+			echo "Local argument detected."
+	fi
+
+	if [ "$arg" == "--custom" ] || [ "$arg" == "-c" ]
+		then
+			echo "Custom argument for custom location detected. '$arg'"
+	fi
+done
+
 # Check if installation directory is set. otherwise will use default directory under .wine/Cemu 
-if [ -z $1 ]; then instdir=$HOME/.wine/Cemu; else instdir=$HOME"$1"; fi
+#if [ -z $1 ]; then instdir=$HOME/.wine/Cemu; else instdir=$HOME"$1"; fi
 
 #*************
 #* Installer *
@@ -133,11 +152,11 @@ echo "$test"
 read -p "Press 'enter' to exit"
 
 # Post install cleaning, will delete downloaded files
-#rm -rf "$cemufile"
+rm -rf "$cemufile"
 #rm -rf "$gpfile" 
-#rm -rf "$chfile"
-#rm -rf "$fontfile"
-#rm -rf "$mfile"
+rm -rf "$chfile"
+rm -rf "$fontfile"
+rm -rf "$mfile"
 
 #**************************
 #* Create launcher script *

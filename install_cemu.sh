@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#test
 #*************************************************************
 #* Pre-Intall Checks (Required software for install and wine * 
 #*************************************************************
@@ -86,7 +86,7 @@ fi
 mfile=SmmServerFinal_v5.zip
 if [ ! -f "$mfile" ]; then
 	echo "Download latest '$mfile'"	
- test=$(megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU' 2>&1 >/dev/tty) 
+megadl --print-names --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU') 
 
 fi
 #megadl --path=./ 'https://mega.nz/#!v5higArA!7QQpLxkZWkP_oNh3DysEqUescgzF5-qwrrSuGS4A2JU'
@@ -116,7 +116,6 @@ echo "$fontfile"
 echo "$test"
 
 read -p "Press 'enter' to exit"
-
 
 # Post install cleaning, will delete downloaded files
 rm -rf "$cemufile"
